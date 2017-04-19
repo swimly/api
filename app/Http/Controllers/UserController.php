@@ -55,6 +55,13 @@ class UserController extends Controller
     }
     // 获取用户列表
     public function lists (Request $request) {
+        $req = $request->all();
+        foreach($req as $key => $value){
+            if($key == 'pageSize' or $key == 'page'){
+            }else{
+                $users = User::where($key, $value);
+            }
+        }
         if ($request->pageSize) {
             $users = User::paginate($request->pageSize);
         }else {
