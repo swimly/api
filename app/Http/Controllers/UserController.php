@@ -53,6 +53,9 @@ class UserController extends Controller
         $user->save();
         return $callback.'('.$user.')';
     }
+    public function paginate (Request $request) {
+        
+    }
     // 获取用户列表
     public function lists (Request $request) {
         $req = $request->all();
@@ -62,12 +65,13 @@ class UserController extends Controller
                 $users = User::where($key, $value);
             }
         }
-        if ($request->pageSize) {
-            $users = User::paginate($request->pageSize);
-        }else {
-            $users = User::all();
-        }
+        $users = User::all();
         return $users;
+        // if ($request->pageSize) {
+        //     $users = User::paginate($request->pageSize);
+        // }else {
+        //     $users = User::all();
+        // }
     }
     // 获取指定用户信息
     public function info (Request $request) {
