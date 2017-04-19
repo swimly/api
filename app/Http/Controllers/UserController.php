@@ -55,7 +55,11 @@ class UserController extends Controller
     }
     // 获取用户列表
     public function lists (Request $request) {
-        $users = User::all();
+        if ($request->pageSize) {
+            $users = User::paginate($request->pageSize);
+        }else {
+            $users = User::all();
+        }
         return $users;
     }
     // 获取指定用户信息
