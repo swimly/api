@@ -27,6 +27,9 @@ class UserController extends Controller
         foreach ($req as $key => $value) {
             if ($key != 'callback') {
                 $user->$key = $value;
+                if($key == 'password'){
+                    $user->$key = md5($value);
+                }
             }
         }
         $user->created_at = Carbon::now();
@@ -58,20 +61,8 @@ class UserController extends Controller
     }
     // 获取用户列表
     public function lists (Request $request) {
-        $req = $request->all();
-        foreach($req as $key => $value){
-            if($key == 'pageSize' or $key == 'page'){
-            }else{
-                $users = User::where($key, $value);
-            }
-        }
-        $users = User::all();
+        $users = User::paginate(5);
         return $users;
-        // if ($request->pageSize) {
-        //     $users = User::paginate($request->pageSize);
-        // }else {
-        //     $users = User::all();
-        // }
     }
     // 获取指定用户信息
     public function info (Request $request) {
