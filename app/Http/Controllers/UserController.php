@@ -61,8 +61,12 @@ class UserController extends Controller
     }
     // 获取用户列表
     public function lists (Request $request) {
-        $users = User::paginate(5);
-        return $users;
+        /*只能进行一个条件查询*/
+        $req = $request->all();
+        foreach($req as $key => $value){
+            $users = User::where($key, $value)->paginate(5);
+            return $users;
+        }
     }
     // 获取指定用户信息
     public function info (Request $request) {
