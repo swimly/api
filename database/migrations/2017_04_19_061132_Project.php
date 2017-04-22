@@ -16,16 +16,17 @@ class Project extends Migration
         Schema::defaultStringLength(191);
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('catory');
-            $table->string('title');
-            $table->string('author');
-            $table->string('cover');
-            $table->string('github');
-            $table->string('preview');
-            $table->integer('views');
-            $table->longText('content');
-            $table->dateTime('time');
-            $table->string('tag');
+            $table->string('catory', 20)->nullable();
+            $table->string('title', 40)->nullable();
+            $table->string('author', 20)->nullable();
+            $table->string('join')->nullable();
+            $table->string('cover', 50)->nullable();
+            $table->string('github', 40)->nullable();
+            $table->string('preview', 40)->nullable();
+            $table->integer('views')->nullable();
+            $table->longText('content')->nullable();
+            $table->dateTime('time')->nullable();
+            $table->string('tag')->nullable();
         });
     }
 

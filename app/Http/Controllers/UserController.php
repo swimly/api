@@ -14,27 +14,24 @@ class UserController extends Controller
     public function sendMail () {
         Mail::send(array('html.view', 'text.view'), $data, $callback);
     }
-    // 验证邮箱
-    public function email (Request $request) {
-        $user = User::where('email', $request->email)->get();
+    // 验证该字段数据是否存在
+    public function check (Request $request, $name,$value) {
+        $user = User::where($name, $value)->get();
         return $user;
     }
     // 用户注册
     public function signUp (Request $request) {
-        $callback = $request->callback;
         $user = new User;
         $req = $request->all();
         foreach ($req as $key => $value) {
-            if ($key != 'callback') {
-                $user->$key = $value;
-                if($key == 'password'){
-                    $user->$key = md5($value);
-                }
+            $user->$key = $value;
+            if($key == 'password'){
+                $user->$key = md5($value);
             }
         }
         $user->created_at = Carbon::now();
         $user->save();
-        return $callback.'('.$user.')';
+        return $user;
     }
     //用户登录
     public function signIn (Request $request) {
@@ -42,19 +39,15 @@ class UserController extends Controller
         return $user;
     }
     //修改用户资料
-    public function edit (Request $request) {
-        $callback = $request->callback;
-        $user = User::find($request->id);
+    public function edit (Request $request, $id) {
+        $user = User::find($id);
         $req = $request->all();
         foreach ($req as $key => $value) {
-            if ($key == 'callback' or $key == 'id') {
-            } else {
-                $user->$key = $value;
-            }
+            $user->$key = $value;
         }
         $user->updated_at = Carbon::now();
         $user->save();
-        return $callback.'('.$user.')';
+        return $user;
     }
     public function paginate (Request $request) {
         
@@ -63,23 +56,25 @@ class UserController extends Controller
     public function lists (Request $request) {
         /*只能进行一个条件查询*/
         $req = $request->all();
-        foreach($req as $key => $value){
-            $users = User::where($key, $value)->paginate(5);
-            return $users;
+        if(count($req)>0){
+            foreach($req as $key => $value){
+                $users = User::where($key, $value)->paginate(10);
+            }
+        }else{
+            $users = User::paginate(10);
         }
+        
+        return $users;
     }
     // 获取指定用户信息
-    public function info (Request $request) {
-        $callback = $request->callback;
-        $info = User::find($request->id);
-        return $callback.'('.$info.')';
+    public function info (Request $request, $id) {
+        $info = User::find($id);
+        return $info;
     }
     // 删除指定用户
-    public function delete (Request $request) {
-        $callback = $request->callback;
-        $id = $request->id;
+    public function delete (Request $request, $id) {
         $user = User::find($id);
         $user->delete();
-        return $callback.'('.$user.')';
+        return $user;
     }
 }
