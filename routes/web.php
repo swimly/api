@@ -28,3 +28,9 @@ Route::get('projects/add', 'ProjectController@add');
 Route::get('projects/edit/{id}', 'ProjectController@edit');
 Route::get('projects/{id}', 'ProjectController@info');
 Route::get('projects/delete/{id}', 'ProjectController@delete');
+/*文章相关操作*/
+Route::get('articles', 'ArticleController@lists');
+Route::get('articles/add', 'ArticleController@add');
+Route::get('articles/edit/{id}', 'ArticleController@edit');
+Route::get('articles/{id}', 'ArticleController@info');
+Route::get('articles/delete/{id}', 'ArticleController@delete');
